@@ -28,6 +28,7 @@ JSON, and reproduction commands live in
 - [Install](#install)
 - [Quickstart](#quickstart)
 - [How it works](#how-it-works)
+- [Why zvec](#why-zvec)
 - [Benchmarks](#benchmarks)
 - [Comparison](#comparison-with-the-built-in-llm-tool-selector)
 - [Configuration](#configuration)
@@ -136,6 +137,25 @@ tool name + description              user message
 Because the collection persists, restarting your application with the same
 tools re-embeds nothing. Change a tool's description and only that tool is
 re-embedded on the next sync.
+
+## Why zvec
+
+The search engine is [zvec](https://github.com/alibaba/zvec): Alibaba's
+open-source (Apache-2.0, 15.9k stars), in-process vector database,
+battle-tested inside Alibaba Group. What that buys this middleware:
+
+- **No server to run.** The engine lives inside your process and the
+  collection is a local directory. Nothing to deploy, monitor, or pay for.
+- **Hybrid in one query.** Dense vectors, sparse vectors, full-text search,
+  and filters fuse in a single call, which is exactly the dense plus SPLADE
+  plus RRF pattern used here.
+- **Fast enough to disappear.** HNSW and IVF index types with WAL durability;
+  in our measurements the zvec search itself is single-digit milliseconds,
+  the rest of the ~100 ms step is local embedding on CPU.
+- **Batteries included.** Local MiniLM and SPLADE models, OpenAI/Jina/Qwen
+  API wrappers, and Ollama-style HTTP endpoints all ship in
+  `zvec.extension`, so every embedder option in this README comes from one
+  dependency.
 
 ## Benchmarks
 
