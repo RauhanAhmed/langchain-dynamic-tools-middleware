@@ -5,6 +5,14 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.2.2] - 2026-09-13
+
+### Changed
+
+- README frames the LLM selector's latency as one extra LLM call per step
+  whose time varies with model speed (13.2 s in our runs), instead of a bare
+  millisecond figure.
+
 ## [0.2.1] - 2026-09-13
 
 ### Changed

@@ -11,7 +11,7 @@ from langchain_dynamic_tools._embeddings import (
 from langchain_dynamic_tools._index import ToolVectorIndex
 from langchain_dynamic_tools._middleware import DynamicToolSelectorMiddleware
 
-__version__ = "0.2.1"
+__version__ = "0.2.2"
 
 __all__ = [
     "DefaultDenseEmbedder",

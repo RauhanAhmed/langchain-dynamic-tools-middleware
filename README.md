@@ -15,7 +15,7 @@ in about 100 ms, with zero extra LLM calls and zero selection tokens.
 | | Full tool set | LLM selector | **This middleware** |
 | --- | ---: | ---: | ---: |
 | Prompt tokens, 10-turn run (100 tools) | 196,153 | 120,367 | **38,207 (−80.5%)** |
-| Selection latency at 100 tools | 0 ms | 13,160 ms | **108 ms (122x faster)** |
+| Selection latency at 100 tools | 0 ms | one extra LLM call per step (13,160 ms in our runs, varies with model speed) | **108 ms (122x faster)** |
 | BFCL overall accuracy (218 questions) | 69.3% | 47.7% | **69.7%** |
 | BFCL prompt tokens per question | 20,493 | 5,135 | **1,435 (14.3x fewer)** |
 | Selection API cost | $0 | billed every step | **$0, runs offline** |
@@ -53,8 +53,9 @@ the full tool set. This middleware breaks the trade-off completely:
 - **Full accuracy at a fraction of the tokens.** 69.7% BFCL overall, ahead of
   the 69.3% full-tool-set baseline, at one-fourteenth of its tokens per
   question.
-- **122x faster selection.** ~108 ms of local search per step instead of
-  ~13.2 s of extra model round trips.
+- **122x faster selection.** ~108 ms of local search per step, fully
+  independent of model speed, instead of a whole extra LLM call per step
+  (13.2 s in our runs, faster or slower depending on the selector model).
 - **Zero selection bill.** No selector model, no per-step API cost, nothing
   leaves your machine. Filtering tools no longer means dumber agents.
 
@@ -216,14 +217,16 @@ per-category tables in
 
 The headline result: the LLM selector sacrifices 21 points of accuracy for a
 partial token saving, while the vector route matches the full tool set on
-accuracy, bills one-fourteenth of its tokens, and answers 122x faster.
+accuracy, bills one-fourteenth of its tokens, and replaces the extra model
+call per step, whose latency always depends on model speed, with ~108 ms of
+local search.
 
 ## Comparison with the built-in LLM tool selector
 
 | | `LLMToolSelectorMiddleware` | `DynamicToolSelectorMiddleware` |
 | --- | --- | --- |
 | Selection method | Extra LLM call per step | Local hybrid vector search |
-| Selection latency (100 tools) | ~13.2 s mean | ~108 ms mean |
+| Selection latency (100 tools) | One extra LLM call per step, ~13.2 s in our runs (faster or slower depending on model speed) | ~108 ms mean, independent of model speed |
 | Selection token cost | Full schemas billed every step | Zero, runs offline |
 | Lexical matching (exact names, rare terms) | Depends on the model | Native, via sparse SPLADE vectors |
 | Semantic matching (paraphrases) | Yes | Yes, via dense embeddings |
