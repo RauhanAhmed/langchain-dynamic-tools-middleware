@@ -14,8 +14,8 @@ in about 100 ms, with zero extra LLM calls and zero selection tokens.
 | --- | ---: | ---: | ---: |
 | Prompt tokens, 10-turn run (100 tools) | 196,153 | 120,367 | **38,207 (−80.5%)** |
 | Selection latency at 100 tools | 0 ms | 13,160 ms | **108 ms (122x faster)** |
-| BFCL simple accuracy | 85% | 66% | **79%** |
-| BFCL irrelevance accuracy | 54% | 29% | **65%** |
+| BFCL overall accuracy (218 questions) | 69.3% | 47.7% | **69.7%** |
+| BFCL prompt tokens per question | 20,493 | 5,135 | **1,435 (14.3x fewer)** |
 | Selection API cost | $0 | billed every step | **$0, runs offline** |
 
 Every number above is measured, not claimed. Methodology, environment, raw
@@ -180,14 +180,29 @@ almost entirely the local SPLADE embedding, zvec search is single-digit ms):
 relative). The LLM selector needs 37 model calls for the same 10 turns
 (dynamic: 17, baseline: 11).
 
-**BFCL accuracy at 100 tools** (dynamic matches or beats the full set while
-billing ~5% of its tokens):
+**BFCL function-calling accuracy, aggregated over 218 questions.**
+[BFCL](https://gorilla.cs.berkeley.edu/leaderboard.html) (Berkeley Function
+Calling Leaderboard) is the standard open benchmark for tool use: each
+question ships real function schemas and checks whether the model calls the
+right function with the right arguments. We ran all three configurations on
+identical questions with every tool set padded to 100 distractors, scoring
+the first model response with BFCL possible-answer semantics. The aggregate
+covers every tested behavior: straightforward calls, knowing when no tool
+fits (irrelevance), and still acting when one does (relevance). Full
+per-category tables in [`benchmarks/RESULTS.md`](benchmarks/RESULTS.md).
 
-| Category | Baseline (all tools) | LLM selector | Dynamic (top 4) |
+| Config | Accuracy (218 questions) | Prompt tokens/question | Errors |
 | --- | ---: | ---: | ---: |
-| simple (n=100) | 85% | 66% | 79% |
-| irrelevance (n=100) | 54% | 29% | 65% |
-| relevance (n=18) | 66.7% | 50% | 44.4% |
+| Baseline (all 100 tools) | 69.3% | 20,493 | 4 |
+| LLM selector (top 4) | 47.7% | 5,135 | 62 |
+| **Dynamic (top 4)** | **69.7%** | **1,435** | **4** |
+
+The takeaway is the breakthrough this package exists for: the LLM selector
+sacrifices 21 points of accuracy for a partial token saving and 62 failed
+questions (extra model calls double rate-limit exposure, and smaller models
+return malformed selections). The vector route matches the full tool set on
+accuracy, bills one-fourteenth of its tokens, answers 122x faster, and fails
+only on provider outages. Filtering tools no longer means dumber agents.
 
 ## Comparison with the built-in LLM tool selector
 
@@ -392,6 +407,9 @@ container workflow and the benchmark harness.
 
 Built by [Rauhan Ahmed Siddiqui](https://rauhanahmed.in).
 
+### Portfolio
+
+- Portfolio: [rauhanahmed.in](https://rauhanahmed.in)
 - GitHub: [RauhanAhmed](https://github.com/RauhanAhmed)
 - LinkedIn: [Rauhan Ahmed](https://www.linkedin.com/in/rauhan-ahmed)
 - X: [@ahmed_rauh46040](https://x.com/ahmed_rauh46040)
