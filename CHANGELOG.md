@@ -5,6 +5,14 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.2.1] - 2026-09-13
+
+### Changed
+
+- Rewrote the README: breakthrough framing with a "Why this changes the game"
+  section, and every in-repo link is now an absolute GitHub URL so all links
+  resolve on the PyPI project page.
+
 ## [0.2.0] - 2026-09-13
 
 ### Added

@@ -2,9 +2,11 @@
 
 [![PyPI version](https://img.shields.io/pypi/v/langchain-dynamic-tools-middleware.svg)](https://pypi.org/project/langchain-dynamic-tools-middleware/)
 [![Python versions](https://img.shields.io/pypi/pyversions/langchain-dynamic-tools-middleware.svg)](https://pypi.org/project/langchain-dynamic-tools-middleware/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/RauhanAhmed/langchain-dynamic-tools-middleware/blob/main/LICENSE)
 [![CI](https://github.com/RauhanAhmed/langchain-dynamic-tools-middleware/actions/workflows/ci.yml/badge.svg)](https://github.com/RauhanAhmed/langchain-dynamic-tools-middleware/actions/workflows/ci.yml)
-[![Coverage](https://img.shields.io/badge/coverage-96%25-brightgreen.svg)](benchmarks/RESULTS.md)
+[![Coverage](https://img.shields.io/badge/coverage-96%25-brightgreen.svg)](https://github.com/RauhanAhmed/langchain-dynamic-tools-middleware/blob/main/benchmarks/RESULTS.md)
+
+**Give your agent 100 tools. Pay for 4. Keep every point of accuracy.**
 
 LangChain agent middleware that hands the model only the tools it needs for
 the current step. Local hybrid vector search picks the top-k relevant tools
@@ -20,11 +22,11 @@ in about 100 ms, with zero extra LLM calls and zero selection tokens.
 
 Every number above is measured, not claimed. Methodology, environment, raw
 JSON, and reproduction commands live in
-[`benchmarks/RESULTS.md`](benchmarks/RESULTS.md).
+[`benchmarks/RESULTS.md`](https://github.com/RauhanAhmed/langchain-dynamic-tools-middleware/blob/main/benchmarks/RESULTS.md).
 
 ## Contents
 
-- [The problem](#the-problem-it-solves)
+- [Why this changes the game](#why-this-changes-the-game)
 - [Install](#install)
 - [Quickstart](#quickstart)
 - [How it works](#how-it-works)
@@ -41,15 +43,27 @@ JSON, and reproduction commands live in
 - [Development](#development)
 - [License](#license)
 
-## The problem it solves
+## Why this changes the game
+
+Tool filtering used to mean a painful trade-off: hand the model everything
+and burn context on every call, or add an LLM selector that bills a second
+model call per step, answers in seconds, and scores 21 accuracy points below
+the full tool set. This middleware breaks the trade-off completely:
+
+- **Full accuracy at a fraction of the tokens.** 69.7% BFCL overall, ahead of
+  the 69.3% full-tool-set baseline, at one-fourteenth of its tokens per
+  question.
+- **122x faster selection.** ~108 ms of local search per step instead of
+  ~13.2 s of extra model round trips.
+- **Zero selection bill.** No selector model, no per-step API cost, nothing
+  leaves your machine. Filtering tools no longer means dumber agents.
 
 Agents with dozens or hundreds of tools pay for all of them on every single
 model call. Tool schemas eat context, cost money, and make the model worse at
 choosing: lookalike options blur together. LangChain's built-in
 `LLMToolSelectorMiddleware` fixes the symptom with another LLM call per step,
-which adds its own latency, tokens, and bill (our measurements: +26 model
-calls and only −38.6% tokens over 10 turns, plus malformed-selection errors
-on smaller models).
+which adds its own latency, tokens, and bill (our measurements: +26 extra
+model calls for the same 10 turns, and still only −38.6% tokens).
 
 This middleware takes a different path. It indexes every tool once into a
 local [zvec](https://github.com/alibaba/zvec) collection (an in-process
@@ -100,9 +114,10 @@ agent = create_agent(
 
 That is the whole integration. Tools are standard LangChain tools built with
 the `@tool` decorator or `StructuredTool`. A runnable six-tool demo lives in
-[`examples/quickstart.py`](examples/quickstart.py), and
-[`examples/custom_embedders.py`](examples/custom_embedders.py) shows OpenAI
-embeddings.
+[`examples/quickstart.py`](https://github.com/RauhanAhmed/langchain-dynamic-tools-middleware/blob/main/examples/quickstart.py),
+and
+[`examples/custom_embedders.py`](https://github.com/RauhanAhmed/langchain-dynamic-tools-middleware/blob/main/examples/custom_embedders.py)
+shows OpenAI embeddings.
 
 ## How it works
 
@@ -159,11 +174,12 @@ battle-tested inside Alibaba Group. What that buys this middleware:
 
 ## Benchmarks
 
-Measured with the harness in [`benchmarks/`](benchmarks/README.md): real
-zvec engine, real local embedding models, live model calls through the full
-`create_agent` stack, Berkeley Function Calling Leaderboard data, token
+Measured with the harness in
+[`benchmarks/`](https://github.com/RauhanAhmed/langchain-dynamic-tools-middleware/tree/main/benchmarks):
+real zvec engine, real local embedding models, live model calls through the
+full `create_agent` stack, Berkeley Function Calling Leaderboard data, token
 counts from provider usage metadata. Full tables in
-[`benchmarks/RESULTS.md`](benchmarks/RESULTS.md).
+[`benchmarks/RESULTS.md`](https://github.com/RauhanAhmed/langchain-dynamic-tools-middleware/blob/main/benchmarks/RESULTS.md).
 
 **Selection latency** stays flat while the tool count grows 20x (the cost is
 almost entirely the local SPLADE embedding, zvec search is single-digit ms):
@@ -189,20 +205,18 @@ identical questions with every tool set padded to 100 distractors, scoring
 the first model response with BFCL possible-answer semantics. The aggregate
 covers every tested behavior: straightforward calls, knowing when no tool
 fits (irrelevance), and still acting when one does (relevance). Full
-per-category tables in [`benchmarks/RESULTS.md`](benchmarks/RESULTS.md).
+per-category tables in
+[`benchmarks/RESULTS.md`](https://github.com/RauhanAhmed/langchain-dynamic-tools-middleware/blob/main/benchmarks/RESULTS.md).
 
-| Config | Accuracy (218 questions) | Prompt tokens/question | Errors |
-| --- | ---: | ---: | ---: |
-| Baseline (all 100 tools) | 69.3% | 20,493 | 4 |
-| LLM selector (top 4) | 47.7% | 5,135 | 62 |
-| **Dynamic (top 4)** | **69.7%** | **1,435** | **4** |
+| Config | Accuracy (218 questions) | Prompt tokens/question |
+| --- | ---: | ---: |
+| Baseline (all 100 tools) | 69.3% | 20,493 |
+| LLM selector (top 4) | 47.7% | 5,135 |
+| **Dynamic (top 4)** | **69.7%** | **1,435** |
 
-The takeaway is the breakthrough this package exists for: the LLM selector
-sacrifices 21 points of accuracy for a partial token saving and 62 failed
-questions (extra model calls double rate-limit exposure, and smaller models
-return malformed selections). The vector route matches the full tool set on
-accuracy, bills one-fourteenth of its tokens, answers 122x faster, and fails
-only on provider outages. Filtering tools no longer means dumber agents.
+The headline result: the LLM selector sacrifices 21 points of accuracy for a
+partial token saving, while the vector route matches the full tool set on
+accuracy, bills one-fourteenth of its tokens, and answers 122x faster.
 
 ## Comparison with the built-in LLM tool selector
 
@@ -213,7 +227,7 @@ only on provider outages. Filtering tools no longer means dumber agents.
 | Selection token cost | Full schemas billed every step | Zero, runs offline |
 | Lexical matching (exact names, rare terms) | Depends on the model | Native, via sparse SPLADE vectors |
 | Semantic matching (paraphrases) | Yes | Yes, via dense embeddings |
-| Robustness on small models | Malformed selections observed | No generation involved |
+| Robustness on small models | Depends on generation quality | No generation involved |
 | Privacy | Sends conversation to selector model | Nothing leaves your machine |
 
 The two compose: cut 200 tools to 20 with vector search, then 20 to 5 with
@@ -298,7 +312,8 @@ sparse_embedder=DualSparse(
 
 The index adapts its vector dimension to whatever your dense embedder
 produces, and rebuilds the collection automatically if you switch embedders
-later. See [`examples/custom_embedders.py`](examples/custom_embedders.py).
+later. See
+[`examples/custom_embedders.py`](https://github.com/RauhanAhmed/langchain-dynamic-tools-middleware/blob/main/examples/custom_embedders.py).
 
 ## Multi-turn conversations
 
@@ -315,7 +330,8 @@ query: they are large and lexically noisy.
 - Default embedders: `pip install "langchain-dynamic-tools-middleware[local]"`
   (sentence-transformers, ~500 MB first download, then offline)
 - zvec wheels: Linux x86_64/aarch64, macOS ARM64, Windows x86_64. Intel Macs
-  use the Linux dev container (see [CONTRIBUTING.md](CONTRIBUTING.md)).
+  use the Linux dev container (see
+  [CONTRIBUTING.md](https://github.com/RauhanAhmed/langchain-dynamic-tools-middleware/blob/main/CONTRIBUTING.md)).
 
 ## API reference
 
@@ -387,7 +403,7 @@ benchmark harness reruns any top_k with `--top-k`.
 **Windows support?**
 Yes, zvec ships Windows x86_64 wheels. macOS runs on Apple Silicon; Intel
 Macs can use the Linux dev container, see
-[CONTRIBUTING.md](CONTRIBUTING.md).
+[CONTRIBUTING.md](https://github.com/RauhanAhmed/langchain-dynamic-tools-middleware/blob/main/CONTRIBUTING.md).
 
 ## Development
 
@@ -396,12 +412,14 @@ uv sync --all-extras
 uv run pytest
 ```
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for the full guide, including the
-container workflow and the benchmark harness.
+See
+[CONTRIBUTING.md](https://github.com/RauhanAhmed/langchain-dynamic-tools-middleware/blob/main/CONTRIBUTING.md)
+for the full guide, including the container workflow and the benchmark
+harness.
 
 ## License
 
-[MIT](LICENSE)
+[MIT](https://github.com/RauhanAhmed/langchain-dynamic-tools-middleware/blob/main/LICENSE)
 
 ## Author
 
