@@ -1,0 +1,258 @@
+{
+  "model": "nvidia:nvidia/nemotron-3.5-lightning-30b-a3b",
+  "results": [
+    {
+      "completion_tokens": 11264,
+      "config": "baseline",
+      "cost_usd": 0.0,
+      "failed_turns": 0,
+      "per_turn": [
+        {
+          "completion_tokens": 2048,
+          "model_calls": 2,
+          "prompt_tokens": 34657,
+          "question": "Find the area of a triangle with a base of 10 units and height of 5 units.",
+          "turn": 0
+        },
+        {
+          "completion_tokens": 1024,
+          "model_calls": 1,
+          "prompt_tokens": 17353,
+          "question": "Calculate the factorial of 5 using math functions.",
+          "turn": 1
+        },
+        {
+          "completion_tokens": 1024,
+          "model_calls": 1,
+          "prompt_tokens": 17390,
+          "question": "Calculate the hypotenuse of a right triangle given the lengths of the other two sides as 4 and 5.",
+          "turn": 2
+        },
+        {
+          "completion_tokens": 1024,
+          "model_calls": 1,
+          "prompt_tokens": 17424,
+          "question": "Find the roots of a quadratic equation with coefficients a=1, b=-3, c=2.",
+          "turn": 3
+        },
+        {
+          "completion_tokens": 1024,
+          "model_calls": 1,
+          "prompt_tokens": 17455,
+          "question": "Solve a quadratic equation where a=2, b=6, and c=5",
+          "turn": 4
+        },
+        {
+          "completion_tokens": 1024,
+          "model_calls": 1,
+          "prompt_tokens": 17495,
+          "question": "Find all the roots of a quadratic equation given coefficients a = 3, b = -11, and c = -4.",
+          "turn": 5
+        },
+        {
+          "completion_tokens": 1024,
+          "model_calls": 1,
+          "prompt_tokens": 18553,
+          "question": "What are the roots of the quadratic equation where a=2, b=5 and c=3 ?",
+          "turn": 6
+        },
+        {
+          "completion_tokens": 1024,
+          "model_calls": 1,
+          "prompt_tokens": 18581,
+          "question": "What is the circumference of a circle with a radius of 4 inches?",
+          "turn": 7
+        },
+        {
+          "completion_tokens": 1024,
+          "model_calls": 1,
+          "prompt_tokens": 18609,
+          "question": "What's the area of a circle with a radius of 10?",
+          "turn": 8
+        },
+        {
+          "completion_tokens": 1024,
+          "model_calls": 1,
+          "prompt_tokens": 18636,
+          "question": "Calculate the area of a circle with a radius of 5 units.",
+          "turn": 9
+        }
+      ],
+      "prompt_reduction_vs_baseline": 0.0,
+      "prompt_tokens": 196153,
+      "prompt_tokens_per_turn": 19615.3,
+      "selection_seconds_mean": 0.0,
+      "tool_count": 100,
+      "turns": 10
+    },
+    {
+      "completion_tokens": 13982,
+      "config": "llm_selector",
+      "cost_usd": 0.0,
+      "failed_turns": 0,
+      "per_turn": [
+        {
+          "completion_tokens": 1268,
+          "model_calls": 2,
+          "prompt_tokens": 4192,
+          "question": "Find the area of a triangle with a base of 10 units and height of 5 units.",
+          "turn": 0
+        },
+        {
+          "completion_tokens": 844,
+          "model_calls": 4,
+          "prompt_tokens": 8577,
+          "question": "Calculate the factorial of 5 using math functions.",
+          "turn": 1
+        },
+        {
+          "completion_tokens": 287,
+          "model_calls": 2,
+          "prompt_tokens": 4417,
+          "question": "Calculate the hypotenuse of a right triangle given the lengths of the other two sides as 4 and 5.",
+          "turn": 2
+        },
+        {
+          "completion_tokens": 2369,
+          "model_calls": 3,
+          "prompt_tokens": 8714,
+          "question": "Find the roots of a quadratic equation with coefficients a=1, b=-3, c=2.",
+          "turn": 3
+        },
+        {
+          "completion_tokens": 1302,
+          "model_calls": 3,
+          "prompt_tokens": 9936,
+          "question": "Solve a quadratic equation where a=2, b=6, and c=5",
+          "turn": 4
+        },
+        {
+          "completion_tokens": 2481,
+          "model_calls": 8,
+          "prompt_tokens": 28209,
+          "question": "Find all the roots of a quadratic equation given coefficients a = 3, b = -11, and c = -4.",
+          "turn": 5
+        },
+        {
+          "completion_tokens": 982,
+          "model_calls": 2,
+          "prompt_tokens": 6879,
+          "question": "What are the roots of the quadratic equation where a=2, b=5 and c=3 ?",
+          "turn": 6
+        },
+        {
+          "completion_tokens": 1260,
+          "model_calls": 2,
+          "prompt_tokens": 7062,
+          "question": "What is the circumference of a circle with a radius of 4 inches?",
+          "turn": 7
+        },
+        {
+          "completion_tokens": 1672,
+          "model_calls": 6,
+          "prompt_tokens": 22648,
+          "question": "What's the area of a circle with a radius of 10?",
+          "turn": 8
+        },
+        {
+          "completion_tokens": 1517,
+          "model_calls": 5,
+          "prompt_tokens": 19733,
+          "question": "Calculate the area of a circle with a radius of 5 units.",
+          "turn": 9
+        }
+      ],
+      "prompt_reduction_vs_baseline": 0.38636166665816984,
+      "prompt_tokens": 120367,
+      "prompt_tokens_per_turn": 12036.7,
+      "selection_seconds_mean": 0.0,
+      "tool_count": 100,
+      "turns": 10
+    },
+    {
+      "completion_tokens": 10050,
+      "config": "dynamic",
+      "cost_usd": 0.0,
+      "failed_turns": 0,
+      "per_turn": [
+        {
+          "completion_tokens": 1153,
+          "model_calls": 2,
+          "prompt_tokens": 2611,
+          "question": "Find the area of a triangle with a base of 10 units and height of 5 units.",
+          "turn": 0
+        },
+        {
+          "completion_tokens": 465,
+          "model_calls": 2,
+          "prompt_tokens": 2046,
+          "question": "Calculate the factorial of 5 using math functions.",
+          "turn": 1
+        },
+        {
+          "completion_tokens": 1182,
+          "model_calls": 2,
+          "prompt_tokens": 2780,
+          "question": "Calculate the hypotenuse of a right triangle given the lengths of the other two sides as 4 and 5.",
+          "turn": 2
+        },
+        {
+          "completion_tokens": 1666,
+          "model_calls": 2,
+          "prompt_tokens": 3742,
+          "question": "Find the roots of a quadratic equation with coefficients a=1, b=-3, c=2.",
+          "turn": 3
+        },
+        {
+          "completion_tokens": 1387,
+          "model_calls": 2,
+          "prompt_tokens": 4406,
+          "question": "Solve a quadratic equation where a=2, b=6, and c=5",
+          "turn": 4
+        },
+        {
+          "completion_tokens": 1234,
+          "model_calls": 2,
+          "prompt_tokens": 4769,
+          "question": "Find all the roots of a quadratic equation given coefficients a = 3, b = -11, and c = -4.",
+          "turn": 5
+        },
+        {
+          "completion_tokens": 1024,
+          "model_calls": 1,
+          "prompt_tokens": 2466,
+          "question": "What are the roots of the quadratic equation where a=2, b=5 and c=3 ?",
+          "turn": 6
+        },
+        {
+          "completion_tokens": 735,
+          "model_calls": 2,
+          "prompt_tokens": 7310,
+          "question": "What is the circumference of a circle with a radius of 4 inches?",
+          "turn": 7
+        },
+        {
+          "completion_tokens": 1024,
+          "model_calls": 1,
+          "prompt_tokens": 3513,
+          "question": "What's the area of a circle with a radius of 10?",
+          "turn": 8
+        },
+        {
+          "completion_tokens": 180,
+          "model_calls": 1,
+          "prompt_tokens": 4564,
+          "question": "Calculate the area of a circle with a radius of 5 units.",
+          "turn": 9
+        }
+      ],
+      "prompt_reduction_vs_baseline": 0.8052183754518156,
+      "prompt_tokens": 38207,
+      "prompt_tokens_per_turn": 3820.7,
+      "selection_seconds_mean": 0.13662869717652082,
+      "tool_count": 100,
+      "turns": 10
+    }
+  ],
+  "top_k": 4
+}
