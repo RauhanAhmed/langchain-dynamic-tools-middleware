@@ -1,6 +1,6 @@
 [project]
 name = "langchain-dynamic-tools-middleware"
-version = "0.1.0"
+version = "0.2.0"
 description = "LangChain agent middleware that selects the most relevant tools per step with local hybrid dense and sparse vector search over zvec"
 readme = "README.md"
 requires-python = ">=3.10"
