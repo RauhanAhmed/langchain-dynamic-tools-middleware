@@ -122,10 +122,6 @@ files = ["src/langchain_dynamic_tools"]
 module = ["zvec", "zvec.*"]
 ignore_missing_imports = true
 
-[[tool.mypy.overrides]]
-module = ["numpy", "numpy.*"]
-ignore_errors = true
-
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_mode = "auto"
