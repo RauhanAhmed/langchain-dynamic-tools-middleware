@@ -1,5 +1,6 @@
 # langchain-dynamic-tools-middleware
 
+[![LangChain Integration](https://img.shields.io/badge/LangChain-Official%20Integration-1C3C3C?logo=langchain&logoColor=white)](https://docs.langchain.com/oss/python/integrations/providers/all_providers)
 [![PyPI version](https://img.shields.io/pypi/v/langchain-dynamic-tools-middleware.svg)](https://pypi.org/project/langchain-dynamic-tools-middleware/)
 [![Python versions](https://img.shields.io/pypi/pyversions/langchain-dynamic-tools-middleware.svg)](https://pypi.org/project/langchain-dynamic-tools-middleware/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/RauhanAhmed/langchain-dynamic-tools-middleware/blob/main/LICENSE)
@@ -7,6 +8,8 @@
 [![Coverage](https://img.shields.io/badge/coverage-96%25-brightgreen.svg)](https://github.com/RauhanAhmed/langchain-dynamic-tools-middleware/blob/main/benchmarks/RESULTS.md)
 
 **Give your agent 100 tools. Pay for 4. Keep every point of accuracy.**
+
+> **Officially listed in the [LangChain Ecosystem](https://docs.langchain.com/oss/python/integrations/providers/all_providers)** as agent middleware.
 
 LangChain agent middleware that hands the model only the tools it needs for
 the current step. Local hybrid vector search picks the top-k relevant tools
